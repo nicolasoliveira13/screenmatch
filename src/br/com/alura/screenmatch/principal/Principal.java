@@ -1,14 +1,16 @@
+package br.com.alura.screenmatch.principal;
+
 import br.com.alura.screenmatch.calculos.CalculadoraDeTempo;
 import br.com.alura.screenmatch.calculos.FiltroDeRecomendacao;
 import br.com.alura.screenmatch.modelos.Episodio;
 import br.com.alura.screenmatch.modelos.Filme;
 import br.com.alura.screenmatch.modelos.Serie;
 
+import java.util.ArrayList;
+
 public class Principal {
     public static void main(String[] args) {
-        Filme meuFilme = new Filme();
-        meuFilme.setNome("Top Gun: Maverick");
-        meuFilme.setAnoDeLancamento(2022);
+        Filme meuFilme = new Filme("Top Gun: Maverick", 2022);
         meuFilme.setDuracaoEmMinutos(130);
         meuFilme.setPlano("Ace");
 
@@ -21,9 +23,8 @@ public class Principal {
         System.out.println("\nO total de avaliações do filme é " + meuFilme.getTotalDeAvaliacoes());
 
 
-        Serie suits = new Serie();
+        Serie suits = new Serie("Suits", 2009);
 
-        suits.setNome("Suits");
         suits.setAnoDeLancamento(2009);
         suits.exibeFichaTecnica();
         suits.setTemporadas(9);
@@ -32,9 +33,7 @@ public class Principal {
         System.out.println("Duração para marotonar Suits: " + suits.getDuracaoEmMinutos());
 
 
-        Filme outroFilme = new Filme();
-        outroFilme.setNome("Top Gun");
-        outroFilme.setAnoDeLancamento(1986);
+        Filme outroFilme = new Filme("Top Gun", 1986);
         outroFilme.setDuracaoEmMinutos(110);
 
         CalculadoraDeTempo calculadora = new CalculadoraDeTempo();
@@ -51,5 +50,30 @@ public class Principal {
         episodio.setSerie(suits);
         episodio.setTotalDasVisualizacoes(80);
         filtro.filtra(episodio);
+
+        System.out.println("****************************************");
+
+        var filmeDoNico = new Filme("Busca Implacável", 2008);
+        filmeDoNico.setDuracaoEmMinutos(93);
+        filmeDoNico.avalia(10);
+
+        ArrayList<Filme> listaDeFilmes = new ArrayList<>();
+
+        listaDeFilmes.add(filmeDoNico);
+        listaDeFilmes.add(meuFilme);
+        listaDeFilmes.add(outroFilme);
+
+        System.out.println("Tamanho da Lista: " + listaDeFilmes.size());
+        System.out.println("Primeiro Filme: " + listaDeFilmes.get(0).getNome());
+
+        System.out.println(listaDeFilmes);
+        System.out.println("toString do filme " + listaDeFilmes.get(0).toString());
+
+        //Assim se imprime todo o array
+        for (int i = 0; i < listaDeFilmes.size(); i++) {
+            System.out.println(listaDeFilmes.get(i).getNome());
+        }
+
+
     }
 }

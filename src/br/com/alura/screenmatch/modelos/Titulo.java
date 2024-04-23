@@ -1,9 +1,10 @@
 package br.com.alura.screenmatch.modelos;
 
-import java.text.DecimalFormat;
+import br.com.alura.screenmatch.excessao.ErroDeConversaoDeAnoExcpetion;
+
 import java.util.Objects;
 
-public class Titulo {
+public class Titulo implements Comparable<Titulo> {
     private String nome;
     private int anoDeLancamento;
     private String plano;
@@ -12,6 +13,21 @@ public class Titulo {
     private int totalDeAvaliacoes;
     private double mediaDasAvaliacoes;
     private int duracaoEmMinutos;
+
+    public Titulo(String nome, int anoDeLancamento) {
+        this.nome = nome;
+        this.anoDeLancamento = anoDeLancamento;
+    }
+
+    public Titulo(TituloOmdb meuTituloOmdb) {
+        this.nome = meuTituloOmdb.title();
+        if (meuTituloOmdb.year().length() > 4){
+            throw new ErroDeConversaoDeAnoExcpetion("Não consegui converter o ano" +
+                    " porque tem mais de 4 caracteres");
+        }
+        this.anoDeLancamento = Integer.valueOf(meuTituloOmdb.year());
+        this.duracaoEmMinutos = Integer.valueOf(meuTituloOmdb.runtime().substring(0,2));
+    }
 
     public int getTotalDeAvaliacoes(){
         return totalDeAvaliacoes;
@@ -73,21 +89,11 @@ public class Titulo {
         this.duracaoEmMinutos = duracaoEmMinutos;
     }
 
-    public DecimalFormat getFormatador() {
-        return formatador;
-    }
-
-    public void setFormatador(DecimalFormat formatador) {
-        this.formatador = formatador;
-    }
-
-    DecimalFormat formatador = new DecimalFormat(("0.00"));
-
     public void exibeFichaTecnica(){
         System.out.println("Nome do br.com.alura.screenmatch.modelos.Filme: " + nome);
         System.out.println("\nAno de Lançamento: " + anoDeLancamento);
         System.out.println("\nA duração do filme é de " + duracaoEmMinutos + " minutos");
-        System.out.println("\nAvaliação: " + formatador.format(mediaDasAvaliacoes));
+        System.out.println("\nAvaliação: " + mediaDasAvaliacoes);
         if (Objects.equals(plano, "Ace")){
             incluidoNoPlano = true;
             System.out.println("\nEste filme está incluso no seu plano!");
@@ -102,5 +108,13 @@ public class Titulo {
         mediaDasAvaliacoes = somaDasAvaliacoes / totalDeAvaliacoes;
     }
 
+    @Override
+    public int compareTo(Titulo outroTitulo) {
+        return this.getNome().compareTo(outroTitulo.getNome());
+    }
 
+    @Override
+    public String toString() {
+        return "Título: " + nome + " (" + anoDeLancamento + ", " + duracaoEmMinutos + " min" + ")";
+    }
 }
